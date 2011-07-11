@@ -1023,7 +1023,7 @@
 		});
 
 		// click routing - direct to HTTP or Ajax, accordingly
-		$( document ).bind( "vclick click", function( event ) {
+		$( document ).bind( "vclick", function( event ) {
 			var link = findClosestLink( event.target );
 			if ( !link ) {
 				return;
