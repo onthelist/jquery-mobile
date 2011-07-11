@@ -16,7 +16,7 @@ DIR = jquery.mobile-${VER}
 nightly: DIR = jquery.mobile
 
 # The output folder for the finished files
-OUTPUT = compiled
+OUTPUT = ../../../public/libs/jqm
 
 # Command to remove the latest directory from the CDN before uploading, only if using latest target
 RMLATEST = echo ""
