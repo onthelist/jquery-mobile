@@ -37,13 +37,13 @@
 		hashListeningEnabled: true,
 
 		// Set default page transition - 'none' for no transitions
-		defaultPageTransition: "slide",
+		defaultPageTransition: "none",
 
 		// Minimum scroll distance that will be remembered when returning to a page
 		minScrollBack: screen.height / 2,
 
 		// Set default dialog transition - 'none' for no transitions
-		defaultDialogTransition: "pop",
+		defaultDialogTransition: "none",
 
 		// Show loading message during Ajax requests
 		// if false, message will not appear, but loading classes will still be toggled on html el
