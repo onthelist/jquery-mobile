@@ -465,7 +465,9 @@
 
 	//simply set the active page's minimum height to screen height, depending on orientation
 	function resetActivePageHeight(){
-		$( "." + $.mobile.activePageClass ).css( "min-height", getScreenHeight() );
+		var $page = $( "." + $.mobile.activePageClass );
+		if ($page.attr('data-' + $.mobile.ns + 'expand-height') !== 'false')
+  		$page.css( "min-height", getScreenHeight() );
 	}
 
 	//shared page enhancements
