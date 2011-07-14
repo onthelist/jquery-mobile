@@ -66,7 +66,9 @@ $.widget( "mobile.textinput", $.mobile.widget, {
 				.focus( toggleClear );
 
 		} else {
-			input.addClass( "ui-corner-all ui-shadow-inset" + themeclass );
+			input.addClass( "ui-shadow-inset" + themeclass );
+			if (input.attr('class').indexOf('ui-corner-') == -1)
+			  input.addClass('ui-corner-all');
 		}
 
 		input.focus(function() {

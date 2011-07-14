@@ -53,7 +53,15 @@ $.fn.buttonMarkup = function( options ) {
 			}
 		}
 
-		if ( o.corners ) {
+    if ( el.attr('class').indexOf('ui-btn-corner-') != -1){
+      // The button was already given corner classes manually
+      var sides = ['left', 'right', 'top', 'bottom'];
+      for (var i=0; i < sides.length; i++){
+        if (el.hasClass('ui-btn-corner-' + sides[i])){
+          innerClass += " ui-btn-corner-" + sides[i];
+        }
+      }
+    } else if ( o.corners ) {
 			buttonClass += " ui-btn-corner-all";
 			innerClass += " ui-btn-corner-all";
 		}
