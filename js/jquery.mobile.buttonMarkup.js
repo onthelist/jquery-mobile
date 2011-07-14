@@ -53,7 +53,7 @@ $.fn.buttonMarkup = function( options ) {
 			}
 		}
 
-    if ( el.attr('class').indexOf('ui-btn-corner-') != -1){
+    if ( el.attr('class') && el.attr('class').indexOf('ui-btn-corner-') != -1){
       // The button was already given corner classes manually
       var sides = ['left', 'right', 'top', 'bottom'];
       for (var i=0; i < sides.length; i++){
