@@ -14,9 +14,9 @@ $.widget( "mobile.page", $.mobile.widget, {
 		backBtnTheme: null,
 		degradeInputs: {
 			color: false,
-			date: false,
-			datetime: false,
-			"datetime-local": false,
+			date: true,
+			datetime: true,
+			"datetime-local": true,
 			email: false,
 			month: false,
 			number: false,
