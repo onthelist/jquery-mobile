@@ -102,6 +102,8 @@ $( ":jqmData(role='listview')" ).live( "listviewcreate", function() {
 				  .toggleClass( "ui-screen-hidden", false );
 
 			}
+
+      list.trigger('filter', [val]);
 		})
 		.appendTo( wrapper )
 		.textinput();
