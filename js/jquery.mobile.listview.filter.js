@@ -113,6 +113,7 @@ $( ":jqmData(role='listview')" ).live( "listviewcreate", function() {
 	}
 
 	wrapper.bind( "submit", function() {
+	  list.trigger('filterSubmit');
 		return false;
 	})
 	.insertBefore( list );
