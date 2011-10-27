@@ -2,32 +2,46 @@
 * jQuery Mobile Framework : "dialog" plugin.
 * Copyright (c) jQuery Project
 * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-* Note: Code is in draft form and is subject to change
 */
 
 (function( $, window, undefined ) {
 
 $.widget( "mobile.dialog", $.mobile.widget, {
 	options: {
-		closeBtnText: "Close"
+		closeBtnText 	: "Close",
+		theme	: "a",
+		initSelector	: ":jqmData(role='dialog')"
 	},
 	_create: function() {
-		var $el = this.element;
+		var self = this,
+			$el = this.element,
+			pageTheme = $el.attr( "class" ).match( /ui-body-[a-z]/ ),
+			headerCloseButton = $( "<a href='#' data-" + $.mobile.ns + "icon='delete' data-" + $.mobile.ns + "iconpos='notext'>"+ this.options.closeBtnText + "</a>" );
+
+		if( pageTheme.length ){
+			$el.removeClass( pageTheme[ 0 ] );
+		}
+
+		$el.addClass( "ui-body-" + this.options.theme );
 
 		// Class the markup for dialog styling
 		// Set aria role
 		$el.attr( "role", "dialog" )
-			.addClass( "ui-page ui-dialog ui-body-a" )
-			.find( ":jqmData(role=header)" )
+			.addClass( "ui-dialog" )
+			.find( ":jqmData(role='header')" )
 			.addClass( "ui-corner-top ui-overlay-shadow" )
-				.prepend( "<a href='#' data-" + $.mobile.ns + "icon='delete' data-" + $.mobile.ns + "rel='back' data-" + $.mobile.ns + "iconpos='notext'>"+ this.options.closeBtnText + "</a>" )
+				.prepend( headerCloseButton )
 			.end()
-			.find( ".ui-content:not([class*='ui-body-'])" )
-				.addClass( 'ui-body-c' )
-			.end()
-			.find( ".ui-content,:jqmData(role='footer')" )
+			.find( ":jqmData(role='content'),:jqmData(role='footer')" )
 				.last()
 				.addClass( "ui-corner-bottom ui-overlay-shadow" );
+
+		// this must be an anonymous function so that select menu dialogs can replace
+		// the close method. This is a change from previously just defining data-rel=back
+		// on the button and letting nav handle it
+		headerCloseButton.bind( "vclick", function() {
+			self.close();
+		});
 
 		/* bind events
 			- clicks and submits should use the closing transition that the dialog opened with
@@ -56,4 +70,10 @@ $.widget( "mobile.dialog", $.mobile.widget, {
 		window.history.back();
 	}
 });
+
+//auto self-init widgets
+$( $.mobile.dialog.prototype.options.initSelector ).live( "pagecreate", function(){
+	$( this ).dialog();
+});
+
 })( jQuery, this );

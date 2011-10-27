@@ -10,7 +10,8 @@
 $.widget( "mobile.navbar", $.mobile.widget, {
 	options: {
 		iconpos: "top",
-		grid: null
+		grid: null,
+		initSelector: ":jqmData(role='navbar')"
 	},
 
 	_create: function(){
@@ -40,6 +41,11 @@ $.widget( "mobile.navbar", $.mobile.widget, {
 			$( this ).addClass( $.mobile.activeBtnClass );
 		});
 	}
+});
+
+//auto self-init widgets
+$( document ).bind( "pagecreate create", function( e ){
+	$( $.mobile.navbar.prototype.options.initSelector, e.target ).navbar();
 });
 
 })( jQuery );

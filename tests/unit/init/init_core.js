@@ -25,7 +25,7 @@
 		teardown: function(){
 			$.extend = extendFn;
 
-			// NOTE reset for pageLoading tests
+			// NOTE reset for showPageLoadingMsg/hidePageLoadingMsg tests
 			$('.ui-loader').remove();
 
 			// clear the classes added by reloading the init
@@ -147,10 +147,10 @@
 			same($("#bar").jqmData('url'), "bak");
 		});
 
-		asyncTest( "pageLoading doesn't add the dialog to the page when loading message is false", function(){
+		asyncTest( "showPageLoadingMsg doesn't add the dialog to the page when loading message is false", function(){
 			expect( 1 );
 			$.mobile.loadingMessage = false;
-			$.mobile.pageLoading(false);
+			$.mobile.showPageLoadingMsg();
 
 			setTimeout(function(){
 				ok(!$(".ui-loader").length, "no ui-loader element");
@@ -158,10 +158,10 @@
 			}, 500);
 		});
 
-		asyncTest( "pageLoading doesn't add the dialog to the page when done is passed as true", function(){
+		asyncTest( "hidePageLoadingMsg doesn't add the dialog to the page when loading message is false", function(){
 			expect( 1 );
 			$.mobile.loadingMessage = true;
-			$.mobile.pageLoading(true);
+			$.mobile.hidePageLoadingMsg();
 
 			setTimeout(function(){
 				same($(".ui-loading").length, 0, "page should not be in the loading state");
@@ -169,10 +169,10 @@
 			}, 500);
 		});
 
-		asyncTest( "pageLoading adds the dialog to the page when done is true", function(){
+		asyncTest( "showPageLoadingMsg adds the dialog to the page when loadingMessage is true", function(){
 			expect( 1 );
 			$.mobile.loadingMessage = true;
-			$.mobile.pageLoading(false);
+			$.mobile.showPageLoadingMsg();
 
 			setTimeout(function(){
 				same($(".ui-loading").length, 1, "page should be in the loading state");
@@ -183,7 +183,7 @@
 		asyncTest( "page loading should contain default loading message", function(){
 			expect( 1 );
 			reloadCoreNSandInit();
-			$.mobile.pageLoading(false);
+			$.mobile.showPageLoadingMsg();
 
 			setTimeout(function(){
 				same($(".ui-loader h1").text(), "loading");
@@ -194,12 +194,75 @@
 		asyncTest( "page loading should contain custom loading message", function(){
 			$.mobile.loadingMessage = "foo";
 			$.testHelper.reloadLib(libName);
-			$.mobile.pageLoading(false);
+			$.mobile.showPageLoadingMsg();
 
 			setTimeout(function(){
 				same($(".ui-loader h1").text(), "foo");
 				start();
 			}, 500);
 		});
+		
+		asyncTest( "page loading should contain custom loading message when set during runtime", function(){
+			$.mobile.loadingMessage = "bar";
+			$.mobile.showPageLoadingMsg();
+
+			setTimeout(function(){
+				same($(".ui-loader h1").text(), "bar");
+				start();
+			}, 500);
+		});
+
+		
+
+		// NOTE: the next two tests work on timeouts that assume a page will be created within 2 seconds
+		// it'd be great to get these using a more reliable callback or event
+		
+		asyncTest( "page does auto-initialize at domready when autoinitialize option is true (default) ", function(){
+			
+			$( "<div />", { "data-nstest-role": "page", "id": "autoinit-on" } ).prependTo( "body" )
+			
+			$(document).one("mobileinit", function(){
+				$.mobile.autoInitializePage = true;
+			});
+			
+			location.hash = "";
+			
+			reloadCoreNSandInit();
+			
+			setTimeout(function(){
+				same( $( "#autoinit-on.ui-page" ).length, 1 );
+				
+				start();
+			}, 2000);
+		});
+		
+		
+		asyncTest( "page does not initialize at domready when autoinitialize option is false ", function(){
+			$(document).one("mobileinit", function(){
+				$.mobile.autoInitializePage = false;
+			});
+			
+			$( "<div />", { "data-nstest-role": "page", "id": "autoinit-off" } ).prependTo( "body" )
+			
+			location.hash = "";
+			
+			
+			reloadCoreNSandInit();
+			
+			setTimeout(function(){
+				same( $( "#autoinit-off.ui-page" ).length, 0 );
+				
+				$(document).bind("mobileinit", function(){
+					$.mobile.autoInitializePage = true;
+				});
+
+				reloadCoreNSandInit();
+				
+				start();
+			}, 2000);
+		});
+		
+		
+		
 	});
 })(jQuery);
